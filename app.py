@@ -3,7 +3,7 @@ import os
 import sys
 
 # routes contains the HTTP handlers for our server and must be imported.
-import routes
+#import routes
 
 def wsgi_app(environ, start_response):
     return bottle.default_app()
