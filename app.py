@@ -17,4 +17,4 @@ def index():
 
 #run(host='localhost', port=8080)
 
-run(host='verkehrsbot', port=80)
+#run(host='verkehrsbot', port=80)
