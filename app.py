@@ -15,6 +15,6 @@ def hello(name):
 def index():
 	return template('<b>Index</b>')
 
-#run(host='localhost', port=8080)
+run(host='localhost', port=80)
 
 #run(host='verkehrsbot', port=80)
