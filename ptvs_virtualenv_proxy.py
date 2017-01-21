@@ -1,4 +1,4 @@
-# ############################################################################
+ # ############################################################################
  #
  # Copyright (c) Microsoft Corporation. 
  #
@@ -57,10 +57,10 @@ if ptvsd_secret:
 def get_wsgi_handler(handler_name):
     if not handler_name:
         raise Exception('WSGI_ALT_VIRTUALENV_HANDLER env var must be set')
-
+    
     if not isinstance(handler_name, str):
         handler_name = to_str(handler_name)
-
+    
     module_name, _, callable_name = handler_name.rpartition('.')
     should_call = callable_name.endswith('()')
     callable_name = callable_name[:-2] if should_call else callable_name
@@ -84,10 +84,10 @@ def get_wsgi_handler(handler_name):
             name_list.insert(0, (callable_name, should_call))
             handler = None
             last_tb = ': ' + traceback.format_exc()
-
+    
     if handler is None:
         raise ValueError('"%s" could not be imported%s' % (handler_name, last_tb))
-
+    
     return handler
 
 activate_this = os.getenv('WSGI_ALT_VIRTUALENV_ACTIVATE_THIS')
@@ -108,9 +108,9 @@ def get_venv_handler():
     import site
     sys.executable = activate_this
     old_sys_path, sys.path = sys.path, []
-
+    
     site.main()
-
+    
     sys.path.insert(0, '')
     for item in old_sys_path:
         if item not in sys.path:
