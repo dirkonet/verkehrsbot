@@ -15,8 +15,6 @@ def hello(name):
 def index():
 	return template('<b>Index</b>')
 
-logger.info('Laeuft.')
-
 def wsgi_app(environ, start_response):
     status = '200 OK'
     response_headers = [('Content-type', 'text/plain')]
