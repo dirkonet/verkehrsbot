@@ -8,10 +8,11 @@ import routes
 def wsgi_app(environ, start_response):
     return bottle.default_app()
 
+
 if __name__ == '__main__':
     PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static').replace('\\', '/')
-    HOST = os.environ.get('SERVER_HOST', 'localhost')
+    HOST = os.environ.get('SERVER_HOST', 'verkehrsbot')
     try:
         PORT = int(os.environ.get('SERVER_PORT', '80'))
     except ValueError:
@@ -25,4 +26,4 @@ if __name__ == '__main__':
         return bottle.static_file(filepath, root=STATIC_ROOT)
 
     # Starts a local test server.
-bottle.run(server='wsgiref', host=HOST, port=PORT)
+	bottle.run(server='wsgiref', host=HOST, port=PORT)
