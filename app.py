@@ -8,11 +8,14 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 logger = logging.getLogger(__name__)
 
 @route('/hello/<name>')
-def index(name):
+def hello(name):
 	logger.info('index called.')
     return template('<b>Hello {{name}}</b>!', name=name)
+
+def index():
+	return template('<b>Index</b>')
 
 #run(host='localhost', port=8080)
 
 if __name__ == '__main__':
-    run(server=srv, host='verkehrsbot.azurewebsites.de', port=80)
+    run(host='verkehrsbot.azurewebsites.de', port=443)
