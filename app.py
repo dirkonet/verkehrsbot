@@ -17,6 +17,15 @@ def index():
 
 logger.info('Laeuft.')
 
-run(host='localhost', port=80)
+def wsgi_app(environ, start_response):
+    status = '200 OK'
+    response_headers = [('Content-type', 'text/plain')]
+    start_response(status, response_headers)
+    response_body = 'Hello World'
+    yield response_body.encode()
 
-#run(host='verkehrsbot', port=80)
+if __name__ == '__main__':
+    from wsgiref.simple_server import make_server
+
+    httpd = make_server('localhost', 80, wsgi_app)
+    httpd.serve_forever()
