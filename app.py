@@ -3,7 +3,7 @@ import os
 import sys
 
 # routes contains the HTTP handlers for our server and must be imported.
-#import routes
+import routes
 
 def wsgi_app(environ, start_response):
     return bottle.default_app()
@@ -12,7 +12,7 @@ def wsgi_app(environ, start_response):
 if __name__ == '__main__':
     PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static').replace('\\', '/')
-    HOST = os.environ.get('SERVER_HOST', 'verkehrsbot')
+    HOST = os.environ.get('SERVER_HOST', 'verkehrsbot.azurewebsites.de')
     try:
         PORT = int(os.environ.get('SERVER_PORT', '80'))
     except ValueError:
