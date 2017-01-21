@@ -17,5 +17,4 @@ def index():
 
 #run(host='localhost', port=8080)
 
-if __name__ == '__main__':
-    run(host='verkehrsbot.azurewebsites.de', port=443)
+run(host='verkehrsbot', port=80)
