@@ -32,4 +32,4 @@ def bot_hook():
 
 
 def get_data(text, username):
-    return 'Hello, {}'.format(username)
+    return 'Hello {}'.format(username)
