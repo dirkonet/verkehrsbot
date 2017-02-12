@@ -2,34 +2,30 @@
 Routes and views for the bottle application.
 """
 
-from bottle import route, view
-from datetime import datetime
+from bottle import route, request
+import telegram
+
+TOKEN='311882778:AAGrL6E3zf7wFySOzD5gFGm2HFGIDY_hdK8'
+APPNAME='verkehrsbot'
 
 @route('/')
-@route('/home')
-@view('index')
 def home():
     """Renders the home page."""
-    return dict(
-        year=datetime.now().year
-    )
+    return 'Nothing to see here, move along.'
 
-@route('/contact')
-@view('contact')
-def contact():
-    """Renders the contact page."""
-    return dict(
-        title='Contact',
-        message='Your contact page.',
-        year=datetime.now().year
-    )
+@route('/setHook')
+def setHook():
+    """Sets the bot's web hook address"""
+    bot = telegram.Bot(TOKEN)
+    botWebhookResult = bot.setWebhook(webhook_url='https://{}.azurewebsites.de/botHook'.format(APPNAME))
+    return str(botWebhookResult)
 
-@route('/about')
-@view('about')
-def about():
-    """Renders the about page."""
-    return dict(
-        title='About',
-        message='Your application description page.',
-        year=datetime.now().year
-    )
+@route('/botHook', method='POST')
+def botHook():
+    bot = telegram.Bot(TOKEN)
+    update = telegram.update.Update.de_json(request.json, bot)
+    bot.sendMessage(chat_id=update.message.chat_id, text=getData(update.message.text, update.message.from_user.username))
+    return 'OK'
+
+def getData(text, username):
+    return 'Hello, {}'.format(username)
