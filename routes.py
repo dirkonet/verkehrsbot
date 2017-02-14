@@ -28,7 +28,7 @@ def set_hook():
 def bot_hook():
     bot = telegram.Bot(BOT_TOKEN)
     dispatcher = Dispatcher(bot, None, workers=0)
-    update = telegram.update.Update.de_json(request.json, bot)
+    #update = telegram.update.Update.de_json(request.json, bot)
 
     dispatcher.add_handler(CommandHandler('Abfahrten', abfahrten, pass_args=True))
 
