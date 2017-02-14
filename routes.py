@@ -32,7 +32,7 @@ def bot_hook():
 
     dispatcher.add_handler(CommandHandler('Abfahrten', abfahrten, pass_args=True))
 
-    #bot.sendMessage(chat_id=update.message.chat_id, text=reply(update.message.text, update.message.from_user.username))
+    bot.sendMessage(chat_id=update.message.chat_id, text=reply(update.message.text, update.message.from_user.username))
     return 'OK'
 
 
@@ -42,7 +42,7 @@ def reply(text, username):
 
 def abfahrten(bot, update, args):
     if len(args) < 1:
-        update.message.reply_text = 'Bitte Haltestelle angeben.'
+        bot.sendMessage(chat_id=update.message.chat_id, text='Bitte Haltestelle angeben.')
         return False
 
     hst = args[0]
@@ -52,5 +52,5 @@ def abfahrten(bot, update, args):
     else:
         minutes = args[1]
 
-    update.message.reply_text = 'Abfahrten für {} in {} Minuten:'.format(hst, minutes)
+    bot.sendMessage(chat_id=update.message.chat_id, text='Abfahrten für {} in {} Minuten:'.format(hst, minutes))
     return True
