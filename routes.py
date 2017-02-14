@@ -32,7 +32,7 @@ def bot_hook():
 
     dispatcher.add_handler(CommandHandler('Abfahrten', abfahrten, pass_args=True))
 
-    bot.sendMessage(chat_id=update.message.chat_id, text=reply(update.message.text, update.message.from_user.username))
+    #bot.sendMessage(chat_id=update.message.chat_id, text=reply(update.message.text, update.message.from_user.username))
     return 'OK'
 
 
