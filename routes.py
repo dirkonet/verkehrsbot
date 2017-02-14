@@ -42,7 +42,8 @@ def reply(text, username):
 
 def abfahrten(bot, update, args):
     if len(args) < 1:
-        return 'Bitte Haltestelle angeben.'
+        update.message.reply_text = 'Bitte Haltestelle angeben.'
+        return False
 
     hst = args[0]
 
@@ -51,4 +52,5 @@ def abfahrten(bot, update, args):
     else:
         minutes = args[1]
 
-    return 'Abfahrten für {} in {} Minuten:'.format(hst, minutes)
+    update.message.reply_text = 'Abfahrten für {} in {} Minuten:'.format(hst, minutes)
+    return True
