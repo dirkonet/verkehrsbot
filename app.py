@@ -15,7 +15,7 @@ if '--debug' in sys.argv[1:] or 'SERVER_DEBUG' in os.environ:
     bottle.debug(True)
 
 
-def wsgi_app():
+def wsgi_app(environ, start_response):
     """Returns the application to make available through wfastcgi. This is used
     when the site is published to Microsoft Azure."""
     return bottle.default_app()
