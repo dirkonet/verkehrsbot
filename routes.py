@@ -5,6 +5,7 @@ Routes and views for the bottle application.
 from bottle import route, request, view, run
 import telegram
 from telegram.ext import Dispatcher, CommandHandler
+import dvb
 
 BOT_TOKEN='311882778:AAGrL6E3zf7wFySOzD5gFGm2HFGIDY_hdK8'
 APP_NAME='verkehrsbot'
@@ -48,9 +49,28 @@ def abfahrten(bot, update, args):
     hst = args[0]
 
     if len(args) < 2:
-        minutes = 0
+        offset = 0
     else:
-        minutes = args[1]
+        offset = args[1]
 
-    bot.sendMessage(chat_id=update.message.chat_id, text='Abfahrten für {} in {} Minuten:'.format(hst, minutes))
+    results = dvb.monitor(hst, offset, 5, 'Dresden')
+
+    [{
+        'line': '85',
+        'direction': 'Striesen',
+        'arrival': 5
+    },
+        {
+            'line': '85',
+            'direction': 'Löbtau Süd',
+            'arrival': 7
+        }]
+
+    message = 'Abfahrten für {} in {} Minuten:'.format(hst, offset)
+
+    for r in results:
+        message += '\n{} - {} - {}'.format(r['line'], r['direction'], r['arrival'])
+
+    bot.sendMessage(chat_id=update.message.chat_id, text=message)
     return True
+
