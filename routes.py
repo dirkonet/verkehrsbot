@@ -8,10 +8,11 @@ from telegram.ext import Dispatcher, CommandHandler, MessageHandler, Filters
 import dvb
 import csv
 import geopy
+import logging
 
 BOT_TOKEN='311882778:AAGrL6E3zf7wFySOzD5gFGm2HFGIDY_hdK8'
 APP_NAME='verkehrsbot'
-
+logging.basicConfig(level=logging.DEBUG)
 
 @route('/')
 def home():
@@ -72,6 +73,7 @@ def nearest_station(bot, update):
         csv_reader = csv.reader(infile, delimiter=';')
         stations = [(int(row[0]), float(row[1]), float(row[2]), row[3]) for row in csv_reader]
 
+        logging.debug('Received location lat {}, lon {}'.format(update.message.location.latitude, update.message.location.longitude))
         coord = (float(update.message.location.longitude), float(update.message.location.latitude))
         pts = [geopy.Point(p[1], p[2], p[0]) for p in stations]
         sts = [p[3] for p in stations]
