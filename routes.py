@@ -28,9 +28,9 @@ def set_hook():
 def bot_hook():
     bot = telegram.Bot(BOT_TOKEN)
     dispatcher = Dispatcher(bot, None, workers=0)
-    #update = telegram.update.Update.de_json(request.json, bot)
-
     dispatcher.add_handler(CommandHandler('Abfahrten', abfahrten, pass_args=True))
+    update = telegram.update.Update.de_json(request.json, bot)
+    dispatcher.process_update(update)
 
     #bot.sendMessage(chat_id=update.message.chat_id, text=reply(update.message.text, update.message.from_user.username))
     return 'OK'
