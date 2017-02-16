@@ -36,7 +36,7 @@ def bot_hook():
     dispatcher.add_handler(CommandHandler('abfahrt', abfahrten, pass_args=True))
     dispatcher.add_handler(CommandHandler('A', abfahrten, pass_args=True))
     dispatcher.add_handler(CommandHandler('a', abfahrten, pass_args=True))
-    dispatcher.add_handler(CommandHandler('Hilfe', hilfe, pass_args=True))
+    dispatcher.add_handler(CommandHandler('Hilfe', hilfe))
     dispatcher.add_handler(MessageHandler(Filters.location, nearest_stations))
     update = telegram.update.Update.de_json(request.json, bot)
     dispatcher.process_update(update)
