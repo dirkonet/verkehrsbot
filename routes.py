@@ -10,7 +10,7 @@ import csv
 import geopy.distance
 import configparser
 
-config = configparser.ConfigParser
+config = configparser.ConfigParser()
 config.read('config.ini')
 botdata = config['BotData']
 
