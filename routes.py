@@ -7,7 +7,7 @@ import telegram
 from telegram.ext import Dispatcher, CommandHandler, MessageHandler, Filters
 import dvb
 import csv
-import geopy
+import geopy.distance
 import os, datetime
 
 import sys
