@@ -10,6 +10,9 @@ import csv
 import geopy
 import os, datetime
 
+import sys
+sys.stderr = open('D:\\home\\LogFiles\\stderr.txt', 'w')
+
 BOT_TOKEN='311882778:AAGrL6E3zf7wFySOzD5gFGm2HFGIDY_hdK8'
 APP_NAME='verkehrsbot'
 
@@ -81,6 +84,7 @@ def nearest_station(bot, update):
         sts = [p[3] for p in stations]
         onept = geopy.Point(coord[0], coord[1])
         alldist = [(p, geopy.distance.distance(p, onept).m) for p in pts]
+
         nearest_point = min(alldist, key=lambda x: (x[1]))[0]
         msg = 'Nächstgelegene Station: {} in {:.0f}m'.format(sts[int(nearest_point.altitude)], min(alldist, key=lambda x: (x[1]))[1])
         log(msg)
