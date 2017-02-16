@@ -61,9 +61,10 @@ def abfahrten(bot, update, args):
             offset = 0
             hst.append(offset)
     else:
-        hst = args[0]
+        hst = args
         offset = 0
 
+    hst = ''.join(hst)
     message = get_abfahrten(hst, offset)
 
     bot.sendMessage(chat_id=update.message.chat_id, text=message)
