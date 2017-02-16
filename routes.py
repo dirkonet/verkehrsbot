@@ -80,7 +80,7 @@ def get_abfahrten(hst, offset):
         message += ':'
 
     for r in results:
-        message += '\n{} - {} - {}'.format(r['line'], r['direction'], r['arrival'])
+        message += '\n{} {} - {} min'.format(r['line'], r['direction'], r['arrival'])
 
     return message
 
