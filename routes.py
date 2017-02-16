@@ -91,7 +91,7 @@ def nearest_stations(bot, update, count=5):
 
         reply_keyboard = [telegram.KeyboardButton(text='/Abfahrten {}'.format(n)) for n in nearest_sts]
         #    nearest_st, nearest_distance, nearest_point.latitude, nearest_point.longitude)
-        bot.sendMessage(chat_id=update.message.chat_id, text=msg, reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard))
+        bot.sendMessage(chat_id=update.message.chat_id, text=msg, reply_markup=telegram.ReplyKeyboardMarkup([reply_keyboard]))
 
 def nearest_station(bot, update):
     # http://stackoverflow.com/a/28368926
