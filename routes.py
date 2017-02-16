@@ -67,13 +67,14 @@ def abfahrten(bot, update, args):
     bot.sendMessage(chat_id=update.message.chat_id, text=message)
     return True
 
+
 def nearest_station(bot, update):
     # http://stackoverflow.com/a/28368926
     with open('allstations.csv', newline='') as infile:
         csv_reader = csv.reader(infile, delimiter=';')
         stations = [(int(row[0]), float(row[1]), float(row[2]), row[3]) for row in csv_reader]
 
-        logging.debug('Received location lat {}, lon {}'.format(update.message.location.latitude, update.message.location.longitude))
+        logging.error('Received location lat {}, lon {}'.format(update.message.location.latitude, update.message.location.longitude))
         coord = (float(update.message.location.longitude), float(update.message.location.latitude))
         pts = [geopy.Point(p[1], p[2], p[0]) for p in stations]
         sts = [p[3] for p in stations]
