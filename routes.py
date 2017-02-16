@@ -67,7 +67,6 @@ def abfahrten(bot, update, args):
 
 def get_abfahrten(hst, offset):
     results = dvb.monitor(hst, offset, 5)
-
     message = 'Abfahrten für {}'.format(hst)
     if offset != 0:
         message += ' in {} Minuten:'.format(offset)
@@ -81,6 +80,7 @@ def get_abfahrten(hst, offset):
 
 
 def nearest_stations(bot, update, count=5):
+    # http://stackoverflow.com/a/28368926
     with open('allstations.csv', newline='', encoding='utf-8') as infile:
         csv_reader = csv.reader(infile, delimiter=';')
         stations = [(int(row[0]), float(row[1]), float(row[2]), row[3]) for row in csv_reader]
@@ -99,6 +99,5 @@ def nearest_stations(bot, update, count=5):
             msg += '\n{} (<a href="https://www.google.de/maps?q={},{}">{:.0f}m</a>)'.format(s, p.latitude, p.longitude, d)
 
         reply_keyboard = [[telegram.KeyboardButton(text='/Abfahrten {}'.format(n))] for n in nearest_sts]
-        #    nearest_st, nearest_distance, nearest_point.latitude, nearest_point.longitude)
         bot.sendMessage(chat_id=update.message.chat_id, text=msg, parse_mode='HTML',
                         reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
