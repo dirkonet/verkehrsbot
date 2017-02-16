@@ -31,6 +31,12 @@ def bot_hook():
     bot = telegram.Bot(BOT_TOKEN)
     dispatcher = Dispatcher(bot, None, workers=0)
     dispatcher.add_handler(CommandHandler('Abfahrten', abfahrten, pass_args=True))
+    dispatcher.add_handler(CommandHandler('abfahrten', abfahrten, pass_args=True))
+    dispatcher.add_handler(CommandHandler('Abfahrt', abfahrten, pass_args=True))
+    dispatcher.add_handler(CommandHandler('abfahrt', abfahrten, pass_args=True))
+    dispatcher.add_handler(CommandHandler('A', abfahrten, pass_args=True))
+    dispatcher.add_handler(CommandHandler('a', abfahrten, pass_args=True))
+    dispatcher.add_handler(CommandHandler('Hilfe', hilfe, pass_args=True))
     dispatcher.add_handler(MessageHandler(Filters.location, nearest_stations))
     update = telegram.update.Update.de_json(request.json, bot)
     dispatcher.process_update(update)
@@ -101,3 +107,10 @@ def nearest_stations(bot, update, count=5):
         reply_keyboard = [[telegram.KeyboardButton(text='/Abfahrten {}'.format(n))] for n in nearest_sts]
         bot.sendMessage(chat_id=update.message.chat_id, text=msg, parse_mode='HTML',
                         reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
+
+def hilfe(bot, update):
+    message = 'Der Bot zeigt die Abfahrten im VVO-Gebiet an. Mit "/Abfahrten Haltestelle" werden die nächsten Abfahrten' \
+              'angezeigt, mit "/Abfahrten Haltestelle 5" die in fünf Minuten. Sendet man dem Bot den aktuellen Standort,' \
+              'werden die fünf nächstgelegenen Haltestellen mit Entfernung und Link zu Google Maps angezeigt.\n' \
+              'Basierend auf dvbpy und python-telegram-bot.'
+    bot.sendMessage(chat_id=update.message.chat_id, text=message)
