@@ -79,6 +79,11 @@ def get_abfahrten(hst, offset):
     else:
         message += ':'
 
+    if len(results) < 1 and ' ' in hst and 'Dresden' not in hst:
+        hstsplit = hst.split(' ')
+        results = dvb.monitor(' '.join(hstsplit[1:]), offset, 5, hstsplit[0])
+        message += '({} wurde als Stadt interpretiert)\n'.format(hstsplit[0])
+
     for r in results:
         message += '\n{} {} - {} min'.format(r['line'], r['direction'], r['arrival'])
 
