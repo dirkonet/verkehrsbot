@@ -8,9 +8,11 @@ from telegram.ext import Dispatcher, CommandHandler, MessageHandler, Filters
 import dvb
 import csv
 import geopy.distance
+import configparser
 
-BOT_TOKEN='311882778:AAGrL6E3zf7wFySOzD5gFGm2HFGIDY_hdK8'
-APP_NAME='verkehrsbot'
+config = configparser.ConfigParser
+config.read('config.ini')
+botdata = config['BotData']
 
 
 @route('/')
@@ -22,15 +24,15 @@ def home():
 @route('/setHook')
 def set_hook():
     """Sets the bot's web hook address"""
-    bot = telegram.Bot(BOT_TOKEN)
-    result = bot.setWebhook(webhook_url='https://{}.azurewebsites.de/botHook'.format(APP_NAME))
+    bot = telegram.Bot(botdata['BotToken'])
+    result = bot.setWebhook(webhook_url='{}/botHook'.format(botdata['BotURL']))
     return str(result)
 
 
 @route('/botHook', method='POST')
 def bot_hook():
     """Entry point for the Telegram connection."""
-    bot = telegram.Bot(BOT_TOKEN)
+    bot = telegram.Bot(botdata['BotToken'])
     dispatcher = Dispatcher(bot, None, workers=0)
     dispatcher.add_handler(CommandHandler('Abfahrten', abfahrten, pass_args=True))
     dispatcher.add_handler(CommandHandler('abfahrten', abfahrten, pass_args=True))
