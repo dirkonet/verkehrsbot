@@ -59,13 +59,13 @@ def abfahrten(bot, update, args):
             elif ':' in offset:   # Offset is clock time, TODO
                 offset = 1
             else:                 # No offset given -> reappend
-                offset = 0
                 hst.append(offset)
+                offset = 0
         else:
             hst = args
             offset = 0
 
-        hst = ''.join(map(str, hst))
+        hst = ' '.join(map(str, hst))
         message = get_abfahrten(hst, offset)
     except Exception as e:
         bot.sendMessage(chat_id=update.message.chat_id, text='Huch: {}'.format(str(e)))
