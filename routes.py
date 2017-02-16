@@ -56,16 +56,21 @@ def abfahrten(bot, update, args):
     else:
         offset = args[1]
 
-    results = dvb.monitor(hst, offset, 5, 'Dresden')
+    message = get_abfahrten(hst, offset)
+
+    bot.sendMessage(chat_id=update.message.chat_id, text=message)
+    return True
+
+
+def get_abfahrten(hst, offset):
+    results = dvb.monitor(hst, offset, 5)
 
     message = 'Abfahrten für {} in {} Minuten:'.format(hst, offset)
 
     for r in results:
         message += '\n{} - {} - {}'.format(r['line'], r['direction'], r['arrival'])
 
-    bot.sendMessage(chat_id=update.message.chat_id, text=message)
-    return True
-
+    return message
 
 def nearest_station(bot, update):
     # http://stackoverflow.com/a/28368926
@@ -79,6 +84,9 @@ def nearest_station(bot, update):
         onept = geopy.Point(coord[0], coord[1])
         alldist = [(p, geopy.distance.distance(p, onept).m) for p in pts]
         nearest_point = min(alldist, key=lambda x: (x[1]))[0]
-        msg = 'Nächstgelegene Station: {} in {:.0f}m'.format(sts[int(nearest_point.altitude)],
+        nearest_st = sts[int(nearest_point.altitude)]
+        msg = 'Nächstgelegene Station: {} in {:.0f}m'.format(nearest_st,
                                                              min(alldist, key=lambda x: (x[1]))[1])
+        msg += '\n'
+        msg += get_abfahrten(nearest_st, 0)
         bot.sendMessage(chat_id=update.message.chat_id, text=msg)
