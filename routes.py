@@ -87,7 +87,7 @@ def nearest_station(bot, update):
         nearest_point = nearest[0]
         nearest_distance = nearest[1]
         nearest_st = sts[int(nearest_point.altitude)]
-        msg = 'Nächstgelegene Station: {} in {:.0f}m (<a href="https://www.google.de/maps?q={},{}">Google Maps</a>))'.format(nearest_st, nearest_distance, nearest_point.latitude, nearest_point.longitude)
+        msg = 'Nächstgelegene Station: {} in {:.0f}m (<a href="https://www.google.de/maps?q={},{}">Google Maps</a>)'.format(nearest_st, nearest_distance, nearest_point.latitude, nearest_point.longitude)
         msg += '\n'
         msg += get_abfahrten(nearest_st, 0)
         bot.sendMessage(chat_id=update.message.chat_id, text=msg, parse_mode='HTML')
