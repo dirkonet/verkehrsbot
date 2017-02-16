@@ -49,20 +49,23 @@ def abfahrten(bot, update, args):
         bot.sendMessage(chat_id=update.message.chat_id, text='Bitte Haltestelle angeben.')
         return False
 
-    if len(args) > 1:
-        hst = args[:-1]
-        offset = args[-1]
+    try:
+        if len(args) > 1:
+            hst = args[:-1]
+            offset = args[-1]
 
-        if offset.isdigit():  # Offset is time in minutes
-            offset = int(offset)
-        elif ':' in offset:   # Offset is clock time, TODO
-            offset = 1
-        else:                 # No offset given -> reappend
+            if offset.isdigit():  # Offset is time in minutes
+                offset = int(offset)
+            elif ':' in offset:   # Offset is clock time, TODO
+                offset = 1
+            else:                 # No offset given -> reappend
+                offset = 0
+                hst.append(offset)
+        else:
+            hst = args
             offset = 0
-            hst.append(offset)
-    else:
-        hst = args
-        offset = 0
+    except Exception as e:
+        bot.sendMessage(chat_id=update.message.chat_id, text='Huch: {}'.format(str(e)))
 
     hst = ''.join(hst)
     message = get_abfahrten(hst, offset)
