@@ -80,8 +80,10 @@ def nearest_station(bot, update):
         onept = geopy.Point(coord[0], coord[1])
         alldist = [(p, geopy.distance.distance(p, onept).m) for p in pts]
         nearest_point = min(alldist, key=lambda x: (x[1]))[0]
-        bot.sendMessage(chat_id=update.message.chat_id, text='Nächstgelegene Station: {} in {:.0f}m'.format(sts[int(nearest_point.altitude)],
-                                                             min(alldist, key=lambda x: (x[1]))[1]))
+        msg = 'Nächstgelegene Station: {} in {:.0f}m'.format(sts[int(nearest_point.altitude)], min(alldist, key=lambda x: (x[1]))[1])
+        log(msg)
+        bot.sendMessage(chat_id=update.message.chat_id, text=msg)
+
 
 def log(txt):
     """Logs fatal errors to a log file if WSGI_LOG env var is defined"""
