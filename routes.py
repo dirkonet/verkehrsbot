@@ -1,5 +1,5 @@
 """
-Routes and views for the bottle application.
+Routes for the bottle based Telegram bot.
 """
 
 from bottle import route, request, view, run
@@ -11,6 +11,7 @@ import geopy.distance
 
 BOT_TOKEN='311882778:AAGrL6E3zf7wFySOzD5gFGm2HFGIDY_hdK8'
 APP_NAME='verkehrsbot'
+
 
 @route('/')
 def home():
@@ -28,6 +29,7 @@ def set_hook():
 
 @route('/botHook', method='POST')
 def bot_hook():
+    """Entry point for the Telegram connection."""
     bot = telegram.Bot(BOT_TOKEN)
     dispatcher = Dispatcher(bot, None, workers=0)
     dispatcher.add_handler(CommandHandler('Abfahrten', abfahrten, pass_args=True))
@@ -37,6 +39,8 @@ def bot_hook():
     dispatcher.add_handler(CommandHandler('A', abfahrten, pass_args=True))
     dispatcher.add_handler(CommandHandler('a', abfahrten, pass_args=True))
     dispatcher.add_handler(CommandHandler('Hilfe', hilfe))
+    dispatcher.add_handler(CommandHandler('hilfe', hilfe))
+    dispatcher.add_handler(CommandHandler('help', hilfe))
     dispatcher.add_handler(MessageHandler(Filters.location, nearest_stations))
     update = telegram.update.Update.de_json(request.json, bot)
     dispatcher.process_update(update)
@@ -91,11 +95,11 @@ def get_abfahrten(hst, offset):
 
 
 def nearest_stations(bot, update, count=5):
-    # http://stackoverflow.com/a/28368926
     with open('allstations.csv', newline='', encoding='utf-8') as infile:
         csv_reader = csv.reader(infile, delimiter=';')
         stations = [(int(row[0]), float(row[1]), float(row[2]), row[3]) for row in csv_reader]
 
+        # distance sorting based on http://stackoverflow.com/a/28368926 by Sergey Ivanov
         coord = (float(update.message.location.latitude), float(update.message.location.longitude))
         pts = [geopy.Point(p[1], p[2], p[0]) for p in stations]
         sts = [p[3] for p in stations]
@@ -107,15 +111,17 @@ def nearest_stations(bot, update, count=5):
         nearest_sts = [sts[int(n.altitude)] for n in nearest_points]
         msg = 'Nächstgelegene Stationen:'
         for s, d, p in zip(nearest_sts, nearest_distances, nearest_points):
-            msg += '\n{} (<a href="https://www.google.de/maps?q={},{}">{:.0f}m</a>)'.format(s, p.latitude, p.longitude, d)
+            msg += '\n{} (<a href="https://www.google.de/maps?q={},{}">{:.0f}m</a>)'.format(s, p.latitude,
+                                                                                            p.longitude, d)
 
         reply_keyboard = [[telegram.KeyboardButton(text='/Abfahrten {}'.format(n))] for n in nearest_sts]
         bot.sendMessage(chat_id=update.message.chat_id, text=msg, parse_mode='HTML',
                         reply_markup=telegram.ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True))
 
+
 def hilfe(bot, update):
-    message = 'Der Bot zeigt die Abfahrten im VVO-Gebiet an. Mit "/Abfahrten Haltestelle" werden die nächsten Abfahrten' \
-              'angezeigt, mit "/Abfahrten Haltestelle 5" die in fünf Minuten. Sendet man dem Bot den aktuellen Standort,' \
-              'werden die fünf nächstgelegenen Haltestellen mit Entfernung und Link zu Google Maps angezeigt.\n' \
-              'Basierend auf dvbpy und python-telegram-bot.'
+    message = 'Der Bot zeigt die Abfahrten im VVO-Gebiet an. Mit "/Abfahrten Haltestelle" werden die nächsten ' \
+              'Abfahrten angezeigt, mit "/Abfahrten Haltestelle 5" die in fünf Minuten. Sendet man dem Bot den ' \
+              'aktuellen Standort, werden die fünf nächstgelegenen Haltestellen mit Entfernung und Link zu ' \
+              'Google Maps angezeigt.\nBasierend auf dvbpy und python-telegram-bot.'
     bot.sendMessage(chat_id=update.message.chat_id, text=message)
