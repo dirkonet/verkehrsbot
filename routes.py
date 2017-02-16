@@ -69,7 +69,7 @@ def abfahrten(bot, update, args):
 
 def nearest_station(bot, update):
     # http://stackoverflow.com/a/28368926
-    with open('allstations.csv', newline='') as infile:
+    with open('allstations.csv', newline='', encoding='utf-8') as infile:
         csv_reader = csv.reader(infile, delimiter=';')
         stations = [(int(row[0]), float(row[1]), float(row[2]), row[3]) for row in csv_reader]
 
