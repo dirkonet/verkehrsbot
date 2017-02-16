@@ -105,7 +105,7 @@ def nearest_stations(bot, update, count=5):
         nearest_sts = [sts[int(n.altitude)] for n in nearest_points]
         msg = 'Nächstgelegene Stationen:'
         for s, d, p in zip(nearest_sts, nearest_distances, nearest_points):
-            msg += '\n{} (<a href="https://www.google.de/maps?q={},{}">{:.0f}m</a>)'.format(s, d, p.latitude, p.longitude)
+            msg += '\n{} (<a href="https://www.google.de/maps?q={},{}">{:.0f}m</a>)'.format(s, p.latitude, p.longitude, d)
 
         reply_keyboard = [[telegram.KeyboardButton(text='/Abfahrten {}'.format(n))] for n in nearest_sts]
         #    nearest_st, nearest_distance, nearest_point.latitude, nearest_point.longitude)
