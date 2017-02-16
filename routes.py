@@ -25,11 +25,11 @@ def home():
 def set_hook():
     """Sets the bot's web hook address"""
     bot = telegram.Bot(botdata['BotToken'])
-    result = bot.setWebhook(webhook_url='{}/botHook'.format(botdata['BotURL']))
+    result = bot.setWebhook(webhook_url='{}/botHook{}'.format(botdata['BotURL'], botdata['LocalToken']))
     return str(result)
 
 
-@route('/botHook', method='POST')
+@route('/botHook{}'.format(botdata['LocalToken']), method='POST')
 def bot_hook():
     """Entry point for the Telegram connection."""
     bot = telegram.Bot(botdata['BotToken'])
