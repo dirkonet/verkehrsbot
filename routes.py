@@ -75,7 +75,9 @@ def nearest_station(bot, update):
 
         log('Received location lat {}, lon {}'.format(update.message.location.latitude, update.message.location.longitude))
         coord = (float(update.message.location.longitude), float(update.message.location.latitude))
+        log('Read {} stations'.format(len(stations)))
         pts = [geopy.Point(p[1], p[2], p[0]) for p in stations]
+        log('Read {} points'.format(len(pts)))
         sts = [p[3] for p in stations]
         onept = geopy.Point(coord[0], coord[1])
         alldist = [(p, geopy.distance.distance(p, onept).m) for p in pts]
