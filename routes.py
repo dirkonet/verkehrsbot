@@ -89,7 +89,7 @@ def nearest_stations(bot, update, count=5):
         nearest_sts = [sts[int(n.altitude)] for n in nearest_points]
         msg = 'Nächstgelegene Stationen:'
         for s, d in zip(nearest_sts, nearest_distances):
-            msg += '\n{} ({}m)'.format(s, d)
+            msg += '\n{} ({:.0f}m)'.format(s, d)
 
         reply_keyboard = [[telegram.KeyboardButton(text='/Abfahrten {}'.format(n))] for n in nearest_sts]
         #    nearest_st, nearest_distance, nearest_point.latitude, nearest_point.longitude)
