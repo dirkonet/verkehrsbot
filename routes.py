@@ -74,15 +74,15 @@ def nearest_station(bot, update):
     # http://stackoverflow.com/a/28368926
     with open('allstations.csv', newline='') as infile:
         csv_reader = csv.reader(infile, delimiter=';')
-        stations = [(int(row[0]), float(row[1]), float(row[2]), row[3]) for row in csv_reader]
+        stations = [(int(row[0]), float(row[2]), float(row[1]), row[3]) for row in csv_reader]
 
         log('Received location lat {}, lon {}'.format(update.message.location.latitude, update.message.location.longitude))
         coord = (float(update.message.location.latitude), float(update.message.location.longitude))
         log('Read {} stations and coord {}'.format(len(stations), coord))
-        pts = [geopy.Point(p[2], p[1], p[0]) for p in stations]
-        log('Read {} points'.format(len(pts)))
+        pts = [geopy.Point(p[1], p[2], p[0]) for p in stations]
+        log('Read {} points, first is {}'.format(len(pts), pts[0]))
         sts = [p[3] for p in stations]
-        log('Read {} station names'.format(len(sts)))
+        log('Read {} station names, first is {}'.format(len(sts), sts[0]))
         onept = geopy.Point(coord[0], coord[1])
         log('onept: {}'.format(onept))
         alldist = [(p, geopy.distance.distance(p, onept).m) for p in pts]
