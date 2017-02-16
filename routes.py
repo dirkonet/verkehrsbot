@@ -82,8 +82,11 @@ def nearest_station(bot, update):
         pts = [geopy.Point(p[1], p[2], p[0]) for p in stations]
         log('Read {} points'.format(len(pts)))
         sts = [p[3] for p in stations]
+        log('Read {} station names'.format(len(sts)))
         onept = geopy.Point(coord[0], coord[1])
+        log('onept: {}'.format(onept))
         alldist = [(p, geopy.distance.distance(p, onept).m) for p in pts]
+        log('Calculated {} distances'.format(len(alldist)))
         nearest_point = min(alldist, key=lambda x: (x[1]))[0]
         log('Nearest point id: {}'.format(sts[int(nearest_point.altitude)]))
         msg = 'Nächstgelegene Station: {} in {:.0f}m'.format(sts[int(nearest_point.altitude)], min(alldist, key=lambda x: (x[1]))[1])
