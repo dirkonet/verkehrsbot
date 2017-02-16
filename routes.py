@@ -49,12 +49,20 @@ def abfahrten(bot, update, args):
         bot.sendMessage(chat_id=update.message.chat_id, text='Bitte Haltestelle angeben.')
         return False
 
-    hst = args[0]
+    if len(args) > 1:
+        hst = args[:-1]
+        offset = args[-1]
 
-    if len(args) < 2:
-        offset = 0
+        if offset.isdigit():  # Offset is time in minutes
+            offset = int(offset)
+        elif ':' in offset:   # Offset is clock time, TODO
+            offset = 1
+        else:                 # No offset given -> reappend
+            offset = 0
+            hst.append(offset)
     else:
-        offset = args[1]
+        hst = args[0]
+        offset = 0
 
     message = get_abfahrten(hst, offset)
 
@@ -65,7 +73,11 @@ def abfahrten(bot, update, args):
 def get_abfahrten(hst, offset):
     results = dvb.monitor(hst, offset, 5)
 
-    message = 'Abfahrten für {} in {} Minuten:'.format(hst, offset)
+    message = 'Abfahrten für {}'.format(hst)
+    if offset != 0:
+        message += ' in {} Minuten:'.format(offset)
+    else:
+        message += ':'
 
     for r in results:
         message += '\n{} - {} - {}'.format(r['line'], r['direction'], r['arrival'])
