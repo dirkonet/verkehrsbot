@@ -77,9 +77,9 @@ def nearest_station(bot, update):
         stations = [(int(row[0]), float(row[1]), float(row[2]), row[3]) for row in csv_reader]
 
         log('Received location lat {}, lon {}'.format(update.message.location.latitude, update.message.location.longitude))
-        coord = (float(update.message.location.longitude), float(update.message.location.latitude))
-        log('Read {} stations'.format(len(stations)))
-        pts = [geopy.Point(p[1], p[2], p[0]) for p in stations]
+        coord = (float(update.message.location.latitude), float(update.message.location.longitude))
+        log('Read {} stations and coord {}'.format(len(stations), coord))
+        pts = [geopy.Point(p[2], p[1], p[0]) for p in stations]
         log('Read {} points'.format(len(pts)))
         sts = [p[3] for p in stations]
         log('Read {} station names'.format(len(sts)))
