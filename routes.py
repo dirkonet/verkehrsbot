@@ -65,11 +65,11 @@ def abfahrten(bot, update, args):
             hst = args
             offset = 0
 
-        hst = ''.join(hst)
+        hst = ''.join(map(str, hst))
         message = get_abfahrten(hst, offset)
     except Exception as e:
         bot.sendMessage(chat_id=update.message.chat_id, text='Huch: {}'.format(str(e)))
-    
+
     bot.sendMessage(chat_id=update.message.chat_id, text=message)
     return True
 
