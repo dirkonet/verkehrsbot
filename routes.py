@@ -8,11 +8,10 @@ from telegram.ext import Dispatcher, CommandHandler, MessageHandler, Filters
 import dvb
 import csv
 import geopy
-import logging
+import os, datetime
 
 BOT_TOKEN='311882778:AAGrL6E3zf7wFySOzD5gFGm2HFGIDY_hdK8'
 APP_NAME='verkehrsbot'
-logging.basicConfig(level=logging.DEBUG)
 
 @route('/')
 def home():
@@ -74,7 +73,7 @@ def nearest_station(bot, update):
         csv_reader = csv.reader(infile, delimiter=';')
         stations = [(int(row[0]), float(row[1]), float(row[2]), row[3]) for row in csv_reader]
 
-        logging.error('Received location lat {}, lon {}'.format(update.message.location.latitude, update.message.location.longitude))
+        log('Received location lat {}, lon {}'.format(update.message.location.latitude, update.message.location.longitude))
         coord = (float(update.message.location.longitude), float(update.message.location.latitude))
         pts = [geopy.Point(p[1], p[2], p[0]) for p in stations]
         sts = [p[3] for p in stations]
@@ -84,3 +83,12 @@ def nearest_station(bot, update):
         bot.sendMessage(chat_id=update.message.chat_id, text='Nächstgelegene Station: {} in {:.0f}m'.format(sts[int(nearest_point.altitude)],
                                                              min(alldist, key=lambda x: (x[1]))[1]))
 
+def log(txt):
+    """Logs fatal errors to a log file if WSGI_LOG env var is defined"""
+    log_file = os.environ.get('WSGI_LOG')
+    if log_file:
+        f = open(log_file, 'a+')
+        try:
+            f.write('%s: %s' % (datetime.datetime.now(), txt))
+        finally:
+            f.close()
